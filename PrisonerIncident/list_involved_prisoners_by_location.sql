@@ -1,3 +1,7 @@
+-- Simple QUERY
+-- Listing all prisoners involved in incidents at a specific location, including their details and the datetime of the incident.
+-- Output includes Prisoner Code, First Name, Last Name, and Incident Datetime.
+
 create or replace function list_involved_prisoners_by_location(
  target_location_id int
 ) returns table (

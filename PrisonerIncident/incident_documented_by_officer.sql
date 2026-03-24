@@ -1,3 +1,7 @@
+-- Simple QUERY
+-- Listing all incidents documented by a specific officer, including details about the incident, location, and involved prisoners.
+-- Output includes Incident ID, Datetime, Description, Location Name, and details of involved prisoners (if any).
+
 create or replace function list_incidents_by_officer(
  target_officer_id int
 ) returns table (
