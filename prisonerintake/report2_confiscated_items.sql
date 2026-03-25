@@ -1,14 +1,36 @@
--- list confiscated items for each intake
--- by Phurithip Paisanworajit
+-- Author: Phurithip Paisanwaorajit 67070503437
 
-SELECT 
+-- Simple QUERY
+-- Filter by date range and item name
+
+create or replace function list_confiscated_items(
+    from_date date,
+    to_date date,
+    item_filter text
+)
+returns table (
+    "Prisoner Code" text,
+    "Intake Date" date,
+    "Item Name" text,
+    "Quantity" int,
+    "Remarks" text
+)
+language sql stable as
+$$
+select 
     p.code,
     pi.intake_date,
     ci.item_name,
     ci.quantity,
     ci.remarks
-FROM confiscateditem ci
-JOIN prisonerintake pi 
-    ON ci.prisonerintake_id = pi.id
-JOIN prisoner p 
-    ON p.prison_intake_id = pi.id;
+from confiscateditem ci
+join prisonerintake pi on ci.prisonerintake_id = pi.id
+join prisoner p on p.prison_intake_id = pi.id
+where pi.intake_date between from_date and to_date
+-- filter by item name (e.g. 'Knife'), or show all if null
+and (ci.item_name = item_filter or item_filter is null)
+order by pi.intake_date desc, ci.item_name;
+$$;
+
+-- show all confiscated items in 2024
+select * from list_confiscated_items('2024-01-01','2024-12-31', null);
