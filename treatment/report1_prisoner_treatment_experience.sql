@@ -14,5 +14,5 @@ JOIN person pe ON pe.id = p.person_id
 JOIN nurse n ON n.id = t.nurse_id
 JOIN person pne ON pne.id = n.person_id
 
-WHERE t.diagnose_date >= '2026-03-22' AND t.diagnose_date < '2026-03-26'
+WHERE t.diagnose_date >= '2025-03-22' AND t.diagnose_date < '2026-03-26'
 ORDER BY diagnose_date desc;
