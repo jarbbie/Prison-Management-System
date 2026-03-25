@@ -7,7 +7,8 @@ create or replace function list_incidents_by_officer(
 ) returns table (
  "Incident ID" int, 
  "Incident Datetime" date, 
- "Description" text, 
+ "Description" text,
+ "Days Since Incident" int,
  "Location Name" text,
  "Prisoner Code" text,
  "Prisoner First Name" text,
@@ -18,6 +19,7 @@ $$
 select pi.id as "Incident ID",
        pi.incident_datetime as "Incident Datetime",
        pi.description as "Description",
+       CURRENT_DATE - pi.incident_datetime as "Days Since Incident",
        pl.name as "Location Name",
        p.code as "Prisoner Code",
        pr.first_name as "Prisoner First Name",
