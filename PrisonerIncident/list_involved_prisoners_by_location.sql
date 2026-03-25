@@ -10,7 +10,8 @@ create or replace function list_involved_prisoners_by_location(
  "Prisoner Last Name" text,
  "Incident Datetime" date,
  "Evaluation Score" int,
- "Risk Alert" text
+ "Risk Alert" text,
+ "Days Ago" int
 ) 
 language sql stable as
 $$
@@ -23,7 +24,8 @@ select p.code as "Prisoner Code",
            WHEN p.evaluation_score < 40 THEN 'High Risk / Requires Escort'
            WHEN p.evaluation_score BETWEEN 40 AND 75 THEN 'Monitor closely'
            ELSE 'Standard Protocol'
-       END as "Risk Alert"
+       END as "Risk Alert",
+       CURRENT_DATE - pi.incident_datetime as "Days Ago"
 from Prisoner p
 join InvolvedPrisoner ip on p.id = ip.prisoner_id
 join PrisonerIncidents pi on ip.prisoner_incicent_id = pi.id
