@@ -1,4 +1,4 @@
--- Report: Visitation Logs for Each Prisoner
+-- Report 2: Visitation Logs for Each Prisoner
 -- by Suwiwat
 
 SELECT
