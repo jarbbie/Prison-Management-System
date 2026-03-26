@@ -32,5 +32,5 @@ order by total_items desc
 limit top_n;
 $$;
 
--- get top 10 intakes in 2025
-select * from total_confiscated_items_per_intake('2025-01-01','2025-12-31', 10);
+-- get top 10 intakes
+select * from total_confiscated_items_per_intake('2021-01-01','2023-12-31', 10);

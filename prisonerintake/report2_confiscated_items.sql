@@ -32,5 +32,5 @@ and (ci.item_name = item_filter or item_filter is null)
 order by pi.intake_date desc, ci.item_name;
 $$;
 
--- show all confiscated items in 2025
-select * from list_confiscated_items('2025-01-01','2025-12-31', null);
+-- show all confiscated items 
+select * from list_confiscated_items('2021-01-01','2023-12-31', null);
