@@ -49,6 +49,7 @@ export default function MaintenanceForm() {
   const [locations, setLocations] = useState<PrisonLocation[]>([])
   const [allMaintainers, setAllMaintainers] = useState<MaintainerOption[]>([])
 
+  const [maintainanceName, setMaintainanceName] = useState('')
   const [prisonLocationId, setPrisonLocationId] = useState<number>(0)
   const [maintainanceDate, setMaintainanceDate] = useState('')
   const [maintainanceCost, setMaintainanceCost] = useState('')
@@ -73,6 +74,7 @@ export default function MaintenanceForm() {
         setAllMaintainers(maints)
 
         if (detail) {
+          setMaintainanceName(detail.maintainanceName)
           setPrisonLocationId(detail.prisonLocationId)
           setMaintainanceDate(detail.maintainanceDate.slice(0, 10))
           setMaintainanceCost(String(detail.maintainanceCost))
@@ -123,6 +125,10 @@ export default function MaintenanceForm() {
     e.preventDefault()
     setError(null)
 
+    if (!maintainanceName.trim()) {
+      setError('Maintenance name is required.')
+      return
+    }
     if (!prisonLocationId) {
       setError('Please select a location.')
       return
@@ -143,13 +149,21 @@ export default function MaintenanceForm() {
       setError('Add at least one labor assignment.')
       return
     }
+    if (laborItems.some((item) => !item.laborTask.trim())) {
+      setError('Task is required for every labor assignment.')
+      return
+    }
 
     const dto = {
+      maintainanceName: maintainanceName.trim(),
       prisonLocationId,
       maintainanceDate,
       maintainanceCost: Number(maintainanceCost),
       status,
-      laborItems: laborItems.map(({ maintainerId, laborTask }) => ({ maintainerId, laborTask })),
+      laborItems: laborItems.map(({ maintainerId, laborTask }) => ({
+        maintainerId,
+        laborTask: laborTask.trim(),
+      })),
     }
 
     setSubmitting(true)
@@ -205,6 +219,19 @@ export default function MaintenanceForm() {
                   value={status}
                   onChange={(e) => setStatus(e.target.value as MaintStatus)}
                   options={MAINT_STATUSES.map((s) => ({ value: s, label: s }))}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Label htmlFor="maintainance-name" required>
+                  Maintenance Name
+                </Label>
+                <Input
+                  id="maintainance-name"
+                  placeholder="Maintenance name"
+                  value={maintainanceName}
+                  onChange={(e) => setMaintainanceName(e.target.value)}
+                  required
                 />
               </FormGroup>
 

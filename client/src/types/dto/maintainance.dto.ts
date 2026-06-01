@@ -30,6 +30,7 @@ export interface LaborItem {
 
 export interface MaintainanceListItem {
   id: number
+  maintainanceName: string
   prisonLocationId: number
   locationName: string
   locationCode: string
@@ -41,6 +42,7 @@ export interface MaintainanceListItem {
 
 export interface MaintainanceDetail {
   id: number
+  maintainanceName: string
   prisonLocationId: number
   locationName: string
   maintainanceDate: string // ISO string from JSON
@@ -50,6 +52,7 @@ export interface MaintainanceDetail {
 }
 
 export interface CreateMaintainanceDto {
+  maintainanceName: string
   prisonLocationId: number
   maintainanceDate: string // YYYY-MM-DD
   maintainanceCost: number

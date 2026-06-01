@@ -11,7 +11,12 @@ import './MaintenanceList.css'
 
 /* ── Types ───────────────────────────────────────────── */
 
-type SortKey = 'maintainanceDate' | 'maintainanceCost' | 'laborCount' | 'status'
+type SortKey =
+  | 'maintainanceName'
+  | 'maintainanceDate'
+  | 'maintainanceCost'
+  | 'laborCount'
+  | 'status'
 
 /* ── Helpers (module-level, no closures over state) ──── */
 
@@ -103,7 +108,10 @@ export default function MaintenanceList() {
   if (search.trim()) {
     const q = search.toLowerCase()
     displayed = displayed.filter(
-      (r) => r.locationName.toLowerCase().includes(q) || r.locationCode.toLowerCase().includes(q)
+      (r) =>
+        r.maintainanceName.toLowerCase().includes(q) ||
+        r.locationName.toLowerCase().includes(q) ||
+        r.locationCode.toLowerCase().includes(q)
     )
   }
   if (filterStatus) {
@@ -142,6 +150,12 @@ export default function MaintenanceList() {
 
   const COLUMNS: Column<MaintainanceListItem>[] = [
     { key: 'id', label: '#', width: '56px' },
+    {
+      key: 'maintainanceName',
+      label: 'Name',
+      sortable: true,
+      render: (val) => <span className="cell-bold">{String(val)}</span>,
+    },
     {
       key: 'locationCode',
       label: 'Location',
@@ -243,7 +257,7 @@ export default function MaintenanceList() {
           <div className="page-toolbar__search">
             <Input
               prefix={<MagnifyingGlassIcon width={15} height={15} />}
-              placeholder="Search by location…"
+              placeholder="Search by name or location…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

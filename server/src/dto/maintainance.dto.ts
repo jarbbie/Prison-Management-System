@@ -12,10 +12,11 @@ const MAINT_STATUSES = [
 
 const LaborItemSchema = z.object({
   maintainerId: z.number().int().positive(),
-  laborTask: z.string(), // optional description — empty string is valid
+  laborTask: z.string().trim().min(1, 'Labor task is required'),
 })
 
 export const CreateMaintainanceSchema = z.object({
+  maintainanceName: z.string().trim().min(1, 'Maintenance name is required'),
   prisonLocationId: z.number().int().positive(),
   maintainanceDate: z.string().date('Expected YYYY-MM-DD'),
   maintainanceCost: z.number().int().positive(),

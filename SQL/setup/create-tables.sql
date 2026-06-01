@@ -264,6 +264,7 @@ CREATE TABLE Treatment (
 
 CREATE TABLE Maintainance (
     id SERIAL PRIMARY KEY,
+    maintainance_name VARCHAR(255) NOT NULL,
     prison_location_id INT NOT NULL,
     maintainance_date DATE NOT NULL,
     maintainance_cost INT NOT NULL,

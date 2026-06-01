@@ -451,29 +451,29 @@ INSERT INTO Treatment (id, prisoner_id, nurse_id, description, diagnose_date) VA
 (22, 15, 13, 'Follow up appointment', '2023-10-22');
 
 -- Maintainance: 22 Rows (prison_location_id scrambled)
-INSERT INTO Maintainance (id, prison_location_id, maintainance_date, maintainance_cost, status) VALUES
-(1, 17, '2023-12-01', 500, 'Done'),
-(2, 4, '2023-12-02', 1200, 'Scheduled'),
-(3, 21, '2023-12-03', 300, 'In progress'),
-(4, 9, '2023-12-04', 800, 'Reported'),
-(5, 14, '2023-12-05', 150, 'Done'),
-(6, 2, '2023-12-06', 450, 'Pending Approval'),
-(7, 19, '2023-12-07', 2200, 'Scheduled'),
-(8, 8, '2023-12-08', 600, 'On Hold'),
-(9, 22, '2023-12-09', 900, 'Done'),
-(10, 11, '2023-12-10', 350, 'Cancelled'),
-(11, 3, '2023-12-11', 1100, 'In progress'),
-(12, 20, '2023-12-12', 400, 'Reported'),
-(13, 6, '2023-12-13', 750, 'Scheduled'),
-(14, 15, '2023-12-14', 1300, 'Done'),
-(15, 1, '2023-12-15', 200, 'Pending Approval'),
-(16, 10, '2023-12-16', 550, 'Scheduled'),
-(17, 18, '2023-12-17', 3200, 'On Hold'),
-(18, 5, '2023-12-18', 850, 'Done'),
-(19, 12, '2023-12-19', 420, 'In progress'),
-(20, 7, '2023-12-20', 1600, 'Scheduled'),
-(21, 16, '2023-12-21', 250, 'Reported'),
-(22, 13, '2023-12-22', 950, 'Done');
+INSERT INTO Maintainance (id, maintainance_name, prison_location_id, maintainance_date, maintainance_cost, status) VALUES
+(1, 'Cell door hinge repair', 17, '2023-12-01', 500, 'Done'),
+(2, 'Kitchen ventilation service', 4, '2023-12-02', 1200, 'Scheduled'),
+(3, 'Laundry drain unclogging', 21, '2023-12-03', 300, 'In progress'),
+(4, 'Lighting inspection', 9, '2023-12-04', 800, 'Reported'),
+(5, 'Pipe leak patch', 14, '2023-12-05', 150, 'Done'),
+(6, 'Security camera alignment', 2, '2023-12-06', 450, 'Pending Approval'),
+(7, 'Generator preventive service', 19, '2023-12-07', 2200, 'Scheduled'),
+(8, 'Roof gutter cleaning', 8, '2023-12-08', 600, 'On Hold'),
+(9, 'Water pump replacement', 22, '2023-12-09', 900, 'Done'),
+(10, 'Storage lock replacement', 11, '2023-12-10', 350, 'Cancelled'),
+(11, 'Electrical panel check', 3, '2023-12-11', 1100, 'In progress'),
+(12, 'Fence damage assessment', 20, '2023-12-12', 400, 'Reported'),
+(13, 'Air conditioner maintenance', 6, '2023-12-13', 750, 'Scheduled'),
+(14, 'Bathroom fixture repair', 15, '2023-12-14', 1300, 'Done'),
+(15, 'Yard bench repainting', 1, '2023-12-15', 200, 'Pending Approval'),
+(16, 'Door sensor calibration', 10, '2023-12-16', 550, 'Scheduled'),
+(17, 'Main gate motor repair', 18, '2023-12-17', 3200, 'On Hold'),
+(18, 'Window frame sealing', 5, '2023-12-18', 850, 'Done'),
+(19, 'Workshop tool rack repair', 12, '2023-12-19', 420, 'In progress'),
+(20, 'Drainage line inspection', 7, '2023-12-20', 1600, 'Scheduled'),
+(21, 'Ceiling tile replacement', 16, '2023-12-21', 250, 'Reported'),
+(22, 'Boiler room service', 13, '2023-12-22', 950, 'Done');
 
 -- PrisonerIncidents: 22 Rows (prison_location_id and reporting_officer_id scrambled)
 INSERT INTO PrisonerIncidents (id, incident_datetime, description, prison_location_id, reporting_officer_id) VALUES

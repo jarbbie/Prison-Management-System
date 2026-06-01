@@ -13,6 +13,7 @@ export type MaintStatus =
 
 export interface MaintainanceRow {
   id: number
+  maintainance_name: string
   prison_location_id: number
   location_name: string
   location_code: string
@@ -24,6 +25,7 @@ export interface MaintainanceRow {
 
 export interface MaintainanceDetailRow {
   id: number
+  maintainance_name: string
   prison_location_id: number
   location_name: string
   maintainance_date: Date
@@ -57,6 +59,7 @@ export interface LaborItem {
 
 export interface MaintainanceListItem {
   id: number
+  maintainanceName: string
   prisonLocationId: number
   locationName: string
   locationCode: string
@@ -68,6 +71,7 @@ export interface MaintainanceListItem {
 
 export interface MaintainanceDetail {
   id: number
+  maintainanceName: string
   prisonLocationId: number
   locationName: string
   maintainanceDate: string
@@ -80,6 +84,7 @@ export interface MaintainanceDetail {
 
 export const toMaintainanceListItem = (row: MaintainanceRow): MaintainanceListItem => ({
   id: row.id,
+  maintainanceName: row.maintainance_name,
   prisonLocationId: row.prison_location_id,
   locationName: row.location_name,
   locationCode: row.location_code,
@@ -105,6 +110,7 @@ export const toMaintainanceDetail = (
   laborItems: LaborItem[]
 ): MaintainanceDetail => ({
   id: row.id,
+  maintainanceName: row.maintainance_name,
   prisonLocationId: row.prison_location_id,
   locationName: row.location_name,
   maintainanceDate: row.maintainance_date.toISOString(),

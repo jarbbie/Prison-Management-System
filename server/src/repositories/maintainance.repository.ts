@@ -13,6 +13,7 @@ export const maintainanceRepository = {
     const result = await pool.query<MaintainanceRow>(`
       SELECT
         ma.id,
+        ma.maintainance_name,
         ma.prison_location_id,
         ma.maintainance_date,
         ma.maintainance_cost,
@@ -23,7 +24,7 @@ export const maintainanceRepository = {
       FROM maintainance ma
       JOIN prisonlocation pl ON pl.id = ma.prison_location_id
       LEFT JOIN labor l ON l.maintainance_id = ma.id
-      GROUP BY ma.id, pl.name, pl.code
+      GROUP BY ma.id, ma.maintainance_name, pl.name, pl.code
       ORDER BY ma.maintainance_date DESC
     `)
     return result.rows
@@ -31,7 +32,7 @@ export const maintainanceRepository = {
 
   async findById(id: number): Promise<MaintainanceDetail | null> {
     const headerResult = await pool.query<MaintainanceDetailRow>(
-      `SELECT ma.id, ma.prison_location_id, ma.maintainance_date,
+      `SELECT ma.id, ma.maintainance_name, ma.prison_location_id, ma.maintainance_date,
               ma.maintainance_cost, ma.status, pl.name AS location_name
        FROM maintainance ma
        JOIN prisonlocation pl ON pl.id = ma.prison_location_id
@@ -61,9 +62,15 @@ export const maintainanceRepository = {
       await client.query('BEGIN')
 
       const result = await client.query<{ id: number }>(
-        `INSERT INTO maintainance (prison_location_id, maintainance_date, maintainance_cost, status)
-         VALUES ($1, $2, $3, $4) RETURNING id`,
-        [dto.prisonLocationId, dto.maintainanceDate, dto.maintainanceCost, dto.status]
+        `INSERT INTO maintainance (maintainance_name, prison_location_id, maintainance_date, maintainance_cost, status)
+         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+        [
+          dto.maintainanceName,
+          dto.prisonLocationId,
+          dto.maintainanceDate,
+          dto.maintainanceCost,
+          dto.status,
+        ]
       )
       const id = result.rows[0].id
 
@@ -100,10 +107,17 @@ export const maintainanceRepository = {
 
       await client.query(
         `UPDATE maintainance
-         SET prison_location_id = $1, maintainance_date = $2,
-             maintainance_cost  = $3, status            = $4
-         WHERE id = $5`,
-        [dto.prisonLocationId, dto.maintainanceDate, dto.maintainanceCost, dto.status, id]
+         SET maintainance_name = $1, prison_location_id = $2, maintainance_date = $3,
+             maintainance_cost = $4, status = $5
+         WHERE id = $6`,
+        [
+          dto.maintainanceName,
+          dto.prisonLocationId,
+          dto.maintainanceDate,
+          dto.maintainanceCost,
+          dto.status,
+          id,
+        ]
       )
 
       // Replace labor items entirely

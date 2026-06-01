@@ -46,6 +46,7 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
   const [editDraft, setEditDraft] = useState<LaborItemDraft>(EMPTY)
   const [isAdding, setIsAdding] = useState(false)
   const [addDraft, setAddDraft] = useState<LaborItemDraft>(EMPTY)
+  const [rowError, setRowError] = useState<string | null>(null)
 
   const busy = editingIdx !== null || isAdding
 
@@ -77,37 +78,53 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
     draft.maintainerId ? `${draft.maintainerFirstName} ${draft.maintainerLastName}` : ''
 
   const startEdit = (idx: number) => {
+    setRowError(null)
     setEditingIdx(idx)
     setEditDraft({ ...items[idx] })
   }
 
   const saveEdit = () => {
     if (editingIdx === null || !editDraft.maintainerId) return
-    onUpdate(editingIdx, editDraft)
+    const laborTask = editDraft.laborTask.trim()
+    if (!laborTask) {
+      setRowError('Task is required for every labor assignment.')
+      return
+    }
+    onUpdate(editingIdx, { ...editDraft, laborTask })
     setEditingIdx(null)
     setEditDraft(EMPTY)
+    setRowError(null)
   }
 
   const cancelEdit = () => {
     setEditingIdx(null)
     setEditDraft(EMPTY)
+    setRowError(null)
   }
 
   const startAdd = () => {
     setAddDraft(EMPTY)
     setIsAdding(true)
+    setRowError(null)
   }
 
   const confirmAdd = () => {
     if (!addDraft.maintainerId) return
-    onAdd(addDraft)
+    const laborTask = addDraft.laborTask.trim()
+    if (!laborTask) {
+      setRowError('Task is required for every labor assignment.')
+      return
+    }
+    onAdd({ ...addDraft, laborTask })
     setAddDraft(EMPTY)
     setIsAdding(false)
+    setRowError(null)
   }
 
   const cancelAdd = () => {
     setAddDraft(EMPTY)
     setIsAdding(false)
+    setRowError(null)
   }
 
   const hasRows = items.length > 0 || isAdding
@@ -124,7 +141,9 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
               <th className="labor-table__th">Skill Description</th>
               <th className="labor-table__th">Company</th>
               <th className="labor-table__th">Specialization</th>
-              <th className="labor-table__th">Task</th>
+              <th className="labor-table__th">
+                Task <span className="labor-table__required">*</span>
+              </th>
               <th className="labor-table__th labor-table__th--actions" />
             </tr>
           </thead>
@@ -174,21 +193,28 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
                   <td className="labor-table__td">
                     <Input
                       placeholder="Describe task…"
+                      required
+                      error={!editDraft.laborTask.trim()}
                       value={editDraft.laborTask}
-                      onChange={(e) => setEditDraft((d) => ({ ...d, laborTask: e.target.value }))}
+                      onChange={(e) => {
+                        setEditDraft((d) => ({ ...d, laborTask: e.target.value }))
+                        setRowError(null)
+                      }}
                     />
                   </td>
 
                   <td className="labor-table__td labor-table__td--actions">
                     <Button
+                      type="button"
                       size="sm"
                       variant="primary"
                       onClick={saveEdit}
-                      disabled={!editDraft.maintainerId}
+                      disabled={!editDraft.maintainerId || !editDraft.laborTask.trim()}
                     >
                       Save
                     </Button>
                     <Button
+                      type="button"
                       size="sm"
                       variant="secondary"
                       iconOnly
@@ -216,6 +242,7 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
                   </td>
                   <td className="labor-table__td labor-table__td--actions">
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
                       iconOnly
@@ -226,6 +253,7 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
                       <Pencil1Icon width={14} height={14} />
                     </Button>
                     <Button
+                      type="button"
                       variant="danger"
                       size="sm"
                       iconOnly
@@ -274,21 +302,34 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
                 <td className="labor-table__td">
                   <Input
                     placeholder="Describe task…"
+                    required
+                    error={!addDraft.laborTask.trim()}
                     value={addDraft.laborTask}
-                    onChange={(e) => setAddDraft((d) => ({ ...d, laborTask: e.target.value }))}
+                    onChange={(e) => {
+                      setAddDraft((d) => ({ ...d, laborTask: e.target.value }))
+                      setRowError(null)
+                    }}
                   />
                 </td>
 
                 <td className="labor-table__td labor-table__td--actions">
                   <Button
+                    type="button"
                     size="sm"
                     variant="primary"
                     onClick={confirmAdd}
-                    disabled={!addDraft.maintainerId}
+                    disabled={!addDraft.maintainerId || !addDraft.laborTask.trim()}
                   >
                     Add
                   </Button>
-                  <Button size="sm" variant="secondary" iconOnly onClick={cancelAdd} title="Cancel">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    iconOnly
+                    onClick={cancelAdd}
+                    title="Cancel"
+                  >
                     <Cross2Icon width={13} height={13} />
                   </Button>
                 </td>
@@ -297,6 +338,8 @@ export default function LineItems({ items, allMaintainers, onAdd, onUpdate, onRe
           </tbody>
         </table>
       </div>
+
+      {rowError && <div className="labor-items__error">{rowError}</div>}
 
       {!isAdding && addAvailable.length > 0 && (
         <div className="labor-items__toolbar">

@@ -93,6 +93,10 @@
   width: 90px;
 }
 
+.labor-table__required {
+  color: var(--color-danger);
+}
+
 .labor-table__row {
   background-color: var(--color-surface);
 }
@@ -147,6 +151,11 @@
 .labor-items__toolbar {
   display: flex;
   align-items: center;
+}
+
+.labor-items__error {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
 }
 
 /* ── Error banner ──────────────────────────────── */
