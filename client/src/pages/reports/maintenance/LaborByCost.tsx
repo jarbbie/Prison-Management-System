@@ -8,6 +8,23 @@ import type { LaborByCost as LaborByCostRow } from '../../../types/dto/labor-rep
 type Row = LaborByCostRow & { _idx: number }
 
 const COLUMNS: Column<Row>[] = [
+  { key: 'maintainanceId', label: 'Maintenance ID', width: '130px' },
+  { key: 'maintainanceName', label: 'Maintenance Name' },
+  {
+    key: 'maintainanceDate',
+    label: 'Maintenance Date',
+    width: '150px',
+    render: (val) => (
+      <span className="cell-muted">
+        {new Date(val as string).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        })}
+      </span>
+    ),
+  },
+  { key: 'maintainanceStatus', label: 'Status', width: '140px' },
   { key: 'firstName', label: 'First Name' },
   { key: 'lastName', label: 'Last Name' },
   { key: 'laborTask', label: 'Task' },

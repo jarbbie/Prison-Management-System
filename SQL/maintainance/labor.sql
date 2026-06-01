@@ -1,10 +1,12 @@
 select
+  ma.id as maintainance_id,
+  ma.maintainance_name,
+  ma.maintainance_date,
+  ma.status as maintainance_status,
   l.labor_task,
   ma.maintainance_cost,
-  ma.status,
   p.first_name,
-  p.last_name,
-  m.company_name
+  p.last_name
 from labor l
 join maintainance ma ON ma.id = l.maintainance_id
 join maintainer m ON m.id = l.maintainer_id

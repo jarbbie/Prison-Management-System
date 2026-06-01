@@ -9,9 +9,19 @@ import { MAINTENANCE_SKILLS } from '../../../types/dto/labor-report.dto'
 type Row = MaintainerBySkill & { _idx: number }
 
 const COLUMNS: Column<Row>[] = [
+  { key: 'maintainerId', label: 'Maintainer ID', width: '120px' },
   { key: 'firstName', label: 'First Name' },
   { key: 'lastName', label: 'Last Name' },
+  { key: 'gender', label: 'Gender', width: '100px' },
   { key: 'age', label: 'Age', width: '80px' },
+  { key: 'maintenanceSkill', label: 'Skill', width: '160px' },
+  {
+    key: 'skillDescription',
+    label: 'Skill Description',
+    render: (val) => (val ? String(val) : <span className="cell-muted">—</span>),
+  },
+  { key: 'companyName', label: 'Company' },
+  { key: 'specialization', label: 'Specialization', width: '170px' },
 ]
 
 const SKILL_OPTIONS = MAINTENANCE_SKILLS.map((s) => ({ value: s, label: s }))

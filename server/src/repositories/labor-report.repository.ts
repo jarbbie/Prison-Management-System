@@ -8,7 +8,16 @@ import type {
 export const laborReportRepository = {
   async findMaintainersBySkill(skill: string): Promise<MaintainerBySkillRow[]> {
     const result = await pool.query<MaintainerBySkillRow>(
-      `SELECT p.first_name, p.last_name, p.age
+      `SELECT
+         m.id AS maintainer_id,
+         p.first_name,
+         p.last_name,
+         p.gender,
+         p.age,
+         m.maintainance_skill,
+         m.skill_description,
+         m.company_name,
+         m.specialization
        FROM maintainer m
        JOIN person p ON p.id = m.person_id
        WHERE m.maintainance_skill = $1
@@ -22,6 +31,10 @@ export const laborReportRepository = {
     const hasMax = maxCost !== undefined
     const result = await pool.query<LaborByCostRow>(
       `SELECT
+         ma.id AS maintainance_id,
+         ma.maintainance_name,
+         ma.maintainance_date,
+         ma.status AS maintainance_status,
          l.labor_task,
          ma.maintainance_cost,
          p.first_name,
@@ -32,7 +45,7 @@ export const laborReportRepository = {
        JOIN person p ON p.id = m.person_id
        WHERE ma.maintainance_cost > $1
          ${hasMax ? 'AND ma.maintainance_cost <= $2' : ''}
-       ORDER BY ma.maintainance_cost DESC`,
+       ORDER BY ma.maintainance_cost DESC, ma.maintainance_date DESC`,
       hasMax ? [minCost, maxCost] : [minCost]
     )
     return result.rows

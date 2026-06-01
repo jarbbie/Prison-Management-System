@@ -13,12 +13,22 @@ export const MAINTENANCE_SKILLS = [
 export type MaintenanceSkill = (typeof MAINTENANCE_SKILLS)[number]
 
 export interface MaintainerBySkill {
+  maintainerId: number
   firstName: string
   lastName: string
+  gender: string
   age: number
+  maintenanceSkill: string
+  skillDescription: string | null
+  companyName: string
+  specialization: string
 }
 
 export interface LaborByCost {
+  maintainanceId: number
+  maintainanceName: string
+  maintainanceDate: string
+  maintainanceStatus: string
   laborTask: string
   maintainanceCost: number
   firstName: string
